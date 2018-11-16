@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int min = INT_MAX;
+    
+    bool canBuy(vector<int> &a, vector<int> &b) {
+        for(int i = 0; i < b.size(); i++)
+            if(b[i] < a[i])
+                return false;
+        return true;
+    }
+    
+    void recursive(vector<int> &price, vector<vector<int> > &special, int cur_index, int cur_cost, vector<int> cur_need) {
+        vector<int> backup = cur_need;
+        int backup_cost = cur_cost;
+        for(int i = cur_index; i < special.size(); i++) {
+            if(canBuy(special[i], cur_need)) {
+                cur_cost += special[i][special[i].size() - 1];
+                for(int j = 0; j < cur_need.size(); j++)
+                    cur_need[j] -= special[i][j];
+                recursive(price, special, i, cur_cost, cur_need);
+                cur_need = backup;
+                cur_cost = backup_cost;
+            }
+        }
+        for(int i = 0; i < cur_need.size(); i++)
+            cur_cost += cur_need[i] * price[i];
+        if(cur_cost < min)
+            min = cur_cost;
+        return;
+    }
+    
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        recursive(price, special, 0, 0, needs);
+        return min;
+    }
+};

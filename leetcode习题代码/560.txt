@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> exist;
+        exist[0] = 1;
+        int p_sum = 0, count = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            p_sum += nums[i];
+            if(exist.count(p_sum - k) != 0)
+                count += exist[p_sum - k];
+            exist[p_sum] += 1;
+        }
+        return count;
+    }
+};

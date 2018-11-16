@@ -1,0 +1,66 @@
+vector<string> readBinaryWatch(int num) {
+    vector<string> rs;
+    for (int h = 0; h < 12; h++)
+    	for (int m = 0; m < 60; m++)
+            if (bitset<10>(h << 6 | m).count() == num)
+                rs.emplace_back(to_string(h) + (m < 10 ? ":0" : ":") + to_string(m));
+    return rs;
+}
+
+class Solution {
+public:
+    void next(vector<int> &comb, const vector<int> &target) {
+        int size = comb.size();
+        for(int i = size - 1; i >= 0; i--) {
+            if(comb[i] != target[i]) {
+                comb[i]++;
+                for(int j = i + 1; j < size; j++) {
+                    comb[j] = comb[j - 1] + 1;
+                }
+                break;
+            }
+        }
+    }
+    
+    string isRight(vector<int> &comb) {
+        int hour = 0, min = 0;
+        vector<int> mapping = {8, 4, 2, 1, 32, 16, 8, 4, 2, 1};
+        for(int i = 0; i < comb.size(); i++) {
+            if(comb[i] <= 3) {
+                hour += mapping[comb[i]];
+            }
+            else {
+                min += mapping[comb[i]];
+            }
+        }
+        string ans = "";
+        if(hour > 11 || min > 59) return ans;
+        else {
+            ans = to_string(hour) + (min < 10? ":0": ":") + to_string(min);
+        }
+        return ans;
+    }
+
+    vector<string> readBinaryWatch(int num) {
+        vector<int> comb;
+        vector<int> target;
+        vector<string> ans;
+        if(num == 0) {
+            ans.push_back("0:00");
+            return ans;
+        }
+        for(int i = 0; i < num; i++) {
+            comb.push_back(i);
+            target.push_back(10 - num + i);
+        }
+        while(comb != target) {
+            string temp = isRight(comb);
+            if(temp != "")
+                ans.push_back(temp);
+            next(comb, target);
+        }
+        string temp = isRight(comb);
+        if(temp != "") ans.push_back(temp);
+        return ans;
+    }
+};

@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        vector<string> store;
+        vector<string>::iterator it;
+        sort(words.begin(), words.end());
+        for(int i = 0; i < words.size(); i++) {
+            if(words[i].size() == 1) store.push_back(words[i]);
+        }
+        for(int i = 0; i < words.size(); i++) {
+            string temp = words[i];
+            temp.erase(words[i].size() - 1);
+            it = find(store.begin(), store.end(), temp);
+            if(it != store.end())
+                store.push_back(words[i]);
+        }
+        string ans = "";
+        for(int i = 0; i < store.size(); i++) {
+            if(store[i].size() > ans.size())
+                ans = store[i];
+        }
+        return ans;
+    }
+};

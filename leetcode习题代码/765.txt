@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int count = 0;
+    
+    void getTheAns(int cp, int i, map<int, int> &mapping, vector<int> &v) {
+        int cp_pos = mapping[cp];
+        if(cp_pos != i + 1) {
+            mapping[v[i + 1]] = cp_pos;
+            swap(v[i + 1], v[cp_pos]);
+            count++;
+        }
+    }
+    
+    int minSwapsCouples(vector<int>& row) {     
+        map<int, int> position;      
+        for(int i = 0; i < row.size(); i++)
+            position[row[i]] = i;       
+        for(int i = 0; i < row.size(); i += 2) {
+            if(row[i] % 2 == 0)
+                getTheAns(row[i] + 1, i, position, row);        
+            else
+                getTheAns(row[i] - 1, i, position, row);  
+        }
+        return count;
+    }
+};

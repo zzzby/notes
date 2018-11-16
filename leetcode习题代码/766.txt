@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        int M = matrix.size(), N = matrix[0].size();
+        for(int i = M - 2; i >= 0; i--) {
+            int temp_col = 0, temp_raw = i;
+            int num = matrix[temp_raw][temp_col];
+            while(++temp_raw <= M - 1 && ++temp_col <= N - 1) {
+                if(matrix[temp_raw][temp_col] != num) return false;
+            }
+        }
+        for(int i = 1; i <= N - 1; i++) {
+            int temp_col = i, temp_raw = 0;
+            int num = matrix[temp_raw][temp_col];
+            while(++temp_raw <= M - 1 && ++temp_col <= N - 1) {
+                if(matrix[temp_raw][temp_col] != num) return false;
+            }
+        }
+        return true;
+    }
+};

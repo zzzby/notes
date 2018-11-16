@@ -1,0 +1,53 @@
+class Solution {
+public:
+    vector<string> ans;
+    
+    void judge(vector<int> &v) {
+        string temp = "(";
+        bool iswell = true;
+        int count = 0;
+        for(int i = 0; i < v.size(); i++) {
+            count += v[i];
+            if(count < -1) {
+                iswell = false;
+                break;
+            }
+            else {
+                if(v[i] == 1)
+                    temp += '(';
+                else
+                    temp += ')';
+            }
+        }
+        if(iswell) {
+            temp += ')';
+            ans.push_back(temp);
+        }
+    }
+    
+    void generate(int pos, int positive_num, int negative_num, vector<int> v) {
+        if(positive_num == v.size() / 2) {
+            for(int i = pos; i < v.size(); i++)
+                v[i] = -1;
+            judge(v);
+            return;
+        }
+        if(negative_num == v.size() / 2) {
+            for(int i = pos; i < v.size(); i++)
+                v[i] = 1;
+            judge(v);
+            return;
+        }
+        v[pos] = 1;
+        generate(pos + 1, positive_num + 1, negative_num, v);
+        v[pos] = -1;
+        generate(pos + 1, positive_num, negative_num + 1, v);
+    }
+    
+    vector<string> generateParenthesis(int n) {
+        int mid_size = 2 * n - 2;
+        vector<int> v(mid_size, 0);
+        generate(0, 0, 0, v);
+        return ans;
+    }
+};

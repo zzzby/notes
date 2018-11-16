@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numUniqueEmails(vector<string>& emails) {      
+        unordered_map<string, bool> mapping;     
+        for(int i = 0; i < emails.size(); i++) {
+            string::iterator it = emails[i].begin();
+            while(it != emails[i].end()) {
+                if(*it == '.') {
+                    it = emails[i].erase(it);
+                } else if(*it == '+') {
+                    do {
+                        it = emails[i].erase(it);
+                    } while(*it != '@');
+                    break;
+                } else if(*it == '@') {
+                    break;
+                } else {
+                    it++;
+                }
+            }
+            mapping[emails[i]] = true;
+        }
+        return mapping.size();
+    }
+};

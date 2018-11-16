@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int uniqueMorseRepresentations(vector<string>& words) {
+        vector<string> dictation = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+        vector<string> store;
+        for(int i = 0; i < words.size(); i++) {
+            string temp = "";
+            for(int j = 0; j < words[i].size(); j++) {
+                temp += dictation[int(words[i][j] - 'a')];
+            }
+            if(find(store.begin(), store.end(), temp) == store.end()) {
+                store.push_back(temp);
+            }
+        }
+        return store.size();
+    }
+};

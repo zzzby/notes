@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int replace(int n) {
+        string temp = to_string(n);
+        int ans = 0;
+        for(int i = 0; i < temp.size(); i++) {
+            ans += (temp[i] - '0') * (temp[i] - '0');
+        }
+        return ans;
+    }
+    
+    bool isHappy(int n) {
+        if(n == 1) return true;
+        vector<int> store;
+        store.push_back(n);
+        int next = replace(n);
+        bool isHappy = false;
+        while(find(store.begin(), store.end(), next) == store.end()) {
+            store.push_back(next);
+            next = replace(next);
+            if(next == 1) {
+                isHappy = true;
+                break;
+            }
+        }
+        return isHappy;
+    }
+};

@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isMonotonic(vector<int>& A) {
+        if(A.size() <= 2) {
+            return true;
+        }
+        bool m_increase = true, m_decrease = true;
+        for(int i = 1; i < A.size(); i++) {
+            if(A[i] < A[i - 1])
+                m_increase = false;
+            if(A[i] > A[i - 1])
+                m_decrease = false;
+            if(!m_increase && !m_decrease)
+                return false;
+        }
+        return true;
+    }
+};

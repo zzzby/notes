@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int matrixScore(vector<vector<int>>& A) {
+        int row_num = A.size(), col_num = A[0].size();
+        for(int i = 0; i < row_num; i++) {
+            if(A[i][0] != 1) {
+                toggle_row(A, i);
+            }
+        }
+        int head = pow(2, (col_num - 1)) * row_num;
+        const int half = row_num / 2;
+        for(int j = 1; j < col_num; j++) {
+            int temp = 0;
+            for(int k = 0; k < row_num; k++) {
+                if(A[k][j] == 1) {
+                    temp++;
+                }
+            }
+            if(temp <= half) {
+                temp = row_num - temp;
+            }
+            head += pow(2, (col_num - 1 - j)) * temp;
+        }
+        return head;
+    }
+    
+    void toggle_row(vector<vector<int> > &A, int row) {
+        for(int i = 0; i < A[0].size(); i++) {
+            A[row][i] = (A[row][i] + 1) % 2;
+        }
+    }
+};

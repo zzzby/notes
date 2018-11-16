@@ -1,0 +1,59 @@
+class RecentCounter {
+    static const int POOL_SIZE = 3002;
+    int pings[POOL_SIZE];
+    int st;
+    int ed;
+    int size;
+    
+public:
+    RecentCounter() {
+        st = 0;
+        ed = 0;
+        size = 0;
+    }
+    
+    int ping(int t) {
+        pings[ed++] = t;
+        ed %= POOL_SIZE;
+        size ++;
+
+        while (pings[st] < t - 3000) {
+            st = (++st) % POOL_SIZE;
+            size --;
+        }
+        return size;
+    }
+    
+    
+// public:
+//     vector<int> v;
+//     int last_index, last_num;
+    
+//     RecentCounter() {
+//         v.clear();
+//         last_num = 0;
+//         last_index = 0;
+//     }
+    
+//     int ping(int t) {
+//         int temp = t - 3000;
+//         int count = 0;
+//         bool cant = true;
+//         for(int i = last_index; i < v.size(); i++) {
+//             if(v[i] >= temp) {
+//                 cant = false;
+//                 last_index = i;
+//                 break;
+//             }
+//             count++;
+//         }
+//         if(cant) {
+//             last_index = v.size();
+//             last_num = 1;
+//         } else {
+//             last_num = last_num + 1 - count;
+//         }
+//         v.push_back(t);
+//         return last_num;
+//     }
+};

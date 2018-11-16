@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        unordered_map<int, int> mapping;
+        for(int i = 0; i < answers.size(); i++) {
+            mapping[answers[i]]++;
+        }
+        unordered_map<int, int>::iterator iter;
+        int ans = 0;
+        for(iter = mapping.begin(); iter != mapping.end(); iter++) {
+            if(iter->first) {
+                int a = iter->second, b = iter->first + 1;
+                int multi = ceil(a / float(b));
+                ans += multi * b;
+            }
+            else
+                ans += iter->second;
+        }
+        return ans;
+    }
+};

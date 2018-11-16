@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        unordered_map<string, int> mapping;
+        for(int i = 0; i < cpdomains.size(); i++) {
+            string cur = cpdomains[i];
+            int index = 0;
+            for(; index < cur.size(); index++) {
+                if(cur[index] == ' ')
+                    break;
+            }
+            string times = cur.substr(0, index);
+            int time = atoi(times.c_str());
+            cur.erase(0, index + 1);
+            mapping[cur] += time;
+            int size = cur.size();
+            for(int j = 0; j < cur.size(); j++) {
+                if(cur[j] == '.') {
+                    mapping[cur.substr(j + 1, size - j - 1)] += time;
+                }
+            }
+        }
+        vector<string> ans;
+        unordered_map<string, int>::iterator iter = mapping.begin();
+        for(; iter != mapping.end(); iter++) {
+            ans.push_back(to_string(iter->second) + " " + iter->first);
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int binaryGap(int N) {
+        int last = -1, cur = 0, max = 0;
+        while(N != 0) {
+            cur++;
+            int cur_num = N % 2;
+            if(cur_num == 1) {
+                if(last != -1)
+                    max = (cur - last) > max? cur - last: max;
+                last = cur;
+            }
+            N /= 2;
+        }
+        return max;
+    }
+};

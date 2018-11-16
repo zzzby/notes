@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int rotatedDigits(int N) {
+        int count = 0;
+        for(int i = 2; i <= N; i++) {
+            string a = to_string(i);
+            bool isGood = false;
+            for(int j = 0; j < a.size(); j++) {
+                if(a[j] == '3' || a[j] == '4' || a[j] == '7' ) {
+                    isGood = false;
+                    break;
+                }
+                else if(a[j] == '0' || a[j] == '1' || a[j] == '8')
+                    continue;
+                else
+                    isGood = true;
+            }
+            if(isGood)
+                count++;
+        }
+        return count;
+    }
+};

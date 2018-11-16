@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int assess(TreeNode* &root) {
+        if(root == nullptr) return 0;
+        int a = assess(root->left) + assess(root->right) + root->val;
+        if(a == 0) root = nullptr;
+        return a;
+    }
+    
+    TreeNode* pruneTree(TreeNode* root) {
+        assess(root);
+        return root;
+    }
+};

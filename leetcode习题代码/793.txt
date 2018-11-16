@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int getTheAns(int n, vector<int> &step, int pos) {
+        n %= step[pos];
+        if(n == step[pos] - 1) {
+            return 0;
+        }
+        else {
+            if(pos == 0) {
+                return 5;
+            }
+            else {
+                pos -= 1;
+                return getTheAns(n, step, pos);
+            }
+        }
+    }
+    
+    int preimageSizeFZF(int k) {
+        vector<int> step;
+        int curStep = 5 + 1;
+        step.push_back(curStep);
+        while(k > curStep - 1) {
+            curStep = 5 * curStep + 1;
+            step.push_back(curStep);
+        }
+        return getTheAns(k, step, step.size() - 1);
+    }
+};

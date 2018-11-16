@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+//µÝ¹é°æ±¾
+class Solution {
+public:
+    map<int, int> mapping;
+    
+    void traversal(TreeNode* root) {
+        if(root->left) traversal(root->left);
+        if(root->right) traversal(root->right);
+        mapping[root->val]++;
+    }
+    
+    int findSecondMinimumValue(TreeNode* root) {
+        traversal(root);
+        if(mapping.size() < 2) return -1; 
+        map<int, int>::iterator it = mapping.begin();
+        it++;
+        return it->first;
+    }
+};
+
+//µü´ú°æ±¾
+class Solution {
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        int min = root->val, ans = INT_MAX;
+        queue<TreeNode*> buf;
+        buf.push(root);
+        while(!buf.empty()) {
+            TreeNode* cur = buf.front();
+            buf.pop();
+            if(cur->left != NULL) {
+                int temp = cur->left->val;
+                if(temp > min) {
+                    if(temp < ans) ans = temp;
+                }
+                else {
+                    buf.push(cur->left);
+                }
+            }
+            if(cur->right != NULL) {
+                int temp = cur->right->val;
+                if(temp > min) {
+                    if(temp < ans) ans = temp;
+                }
+                else {
+                    buf.push(cur->right);
+                }
+            }
+        }
+        if(ans == INT_MAX) return -1;
+        return ans;
+    }
+};

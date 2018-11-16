@@ -1,0 +1,95 @@
+class Solution {
+public:
+    bool haveSolution(string &v) {
+        int count = 0;
+        for(int i = 1; i < 6; i++) {
+            if(v[i] != '0')
+                for(int j = i - 1; j >= 0; j--)
+                    if(v[j] > v[i])
+                        count++;
+        }
+        return count % 2 == 0? true: false;
+    }
+    
+    void process(string ts, int n1, int n2, queue<int> &open, vector<int> &closed) {
+        swap(ts[n1], ts[n2]);
+        int temp = atoi(ts.c_str());
+        if(find(closed.begin(), closed.end(), temp) == closed.end()) {
+            open.push(temp);
+        }
+    }
+    
+    int slidingPuzzle(vector<vector<int>>& board) {
+        string init = "";
+        vector<int> closed;
+        queue<int> open; 
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 3; j++) {
+                init += '0' + board[i][j];
+            }
+        }
+        
+        if(haveSolution(init)) {
+            int target = 123456;
+            for(int i = 0; i < init.size(); i++) {
+                if(init[i] == '0')
+                    init[i] = '6';
+            }
+            open.push(atoi(init.c_str()));
+            open.push(0);
+            int ans = 0;
+            while(!open.empty()) {
+                int temp = open.front();
+                open.pop();
+                if(temp != 0) {
+                    if(temp == target) {
+                        return ans;
+                    }
+                    else {
+                        closed.push_back(temp);
+                        string ts = to_string(temp);
+                        int zero_pos;
+                        for(int i = 0; i < ts.size(); i++) {
+                            if(ts[i] == '6') {
+                                zero_pos = i;
+                                break;
+                            }
+                        }
+                        switch(zero_pos) {
+                            case 0:
+                                process(ts, 0, 1, open, closed);
+                                process(ts, 0, 3, open, closed);
+                                break;
+                            case 1:
+                                process(ts, 1, 0, open, closed);
+                                process(ts, 1, 2, open, closed);
+                                process(ts, 1, 4, open, closed);
+                                break;
+                            case 2:
+                                process(ts, 2, 1, open, closed);
+                                process(ts, 2, 5, open, closed);
+                                break;
+                            case 3:
+                                process(ts, 3, 4, open, closed);
+                                process(ts, 3, 0, open, closed);
+                                break;
+                            case 4:
+                                process(ts, 4, 5, open, closed);
+                                process(ts, 4, 3, open, closed);
+                                process(ts, 4, 1, open, closed);
+                                break;
+                            case 5:
+                                process(ts, 5, 2, open, closed);
+                                process(ts, 5, 4, open, closed);
+                        }
+                    }
+                }
+                else {
+                    ans++;
+                    open.push(0);
+                }
+            }
+        }
+        return -1;
+    }
+};

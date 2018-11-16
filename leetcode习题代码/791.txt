@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string customSortString(string S, string T) {
+        bool appear[26];
+        memset(appear, false, sizeof(appear));
+        map<char, int> mapping;
+        for(int i = 0; i < T.size(); i++) {
+            mapping[T[i]]++;
+        }
+        string ans = "";
+        for(int i = 0; i < S.size(); i++) {
+            if(mapping.find(S[i]) != mapping.end()) {
+                appear[S[i] - 'a'] = true;
+                int num = mapping.find(S[i])->second;
+                while(num--) {
+                    ans += S[i];
+                }
+            }
+        }
+        map<char, int>::iterator iter = mapping.begin();
+        for(; iter != mapping.end(); iter++) {
+            if(!appear[iter->first - 'a']) {
+                int num = iter->second;
+                while(num--) {
+                    ans += iter->first;
+                }
+            }   
+        }
+        return ans;
+    }
+};
