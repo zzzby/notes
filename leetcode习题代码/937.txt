@@ -1,0 +1,20 @@
+class Solution {
+public:
+    static bool cmp(string s, string b) {
+        int s_i = s.find(" ");
+        int b_i = b.find(" ");
+        if(isdigit(s[s_i + 1]))
+            return false;
+        if(isdigit(b[b_i + 1]))
+            return true;
+        string s_sub = s.substr(s_i);
+        string b_sub = b.substr(b_i);
+        int res = strcmp(s_sub.c_str(), b_sub.c_str());
+        return res? res < 0: strcmp(s.c_str(), b.c_str()) < 0;
+    }
+    
+    vector<string> reorderLogFiles(vector<string>& logs) {
+        stable_sort(logs.begin(), logs.end(), cmp);
+        return logs;
+    }
+};
