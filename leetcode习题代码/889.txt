@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int, int> m; // value->index
+    TreeNode* constructFromPrePost(vector<int>& pre, vector<int>& post) {
+        int len = post.size();
+        for (int i = 0; i < len; i++) m[post[i]] = i;
+        return construct(pre, post, 0, len - 1, 0, len - 1);
+    }
+    
+    TreeNode* construct(vector<int>& pre, vector<int>& post, int a, int b, int c, int d) {
+        TreeNode* n = new TreeNode(pre[a]);
+        if (a == b) return n;
+        int t = pre[a + 1];
+        int idx = m[t];
+        int len = idx - c + 1;
+        n->left = construct(pre, post, a + 1, a + len, c, c + len - 1);
+        if (idx + 1 == d) return n;
+        n->right = construct(pre, post, a + len + 1, b, idx + 1, d - 1);
+        return n;
+    }
+};
+    // TreeNode* constructFromPrePost(vector<int>& pre, vector<int>& post) {
+    //     if(pre.empty()) return NULL;
+    //     TreeNode* ans = new TreeNode(pre[0]);
+    //     if(pre.size() == 1) {
+    //         return ans;
+    //     }
+    //     int next_root = pre[1];
+    //     vector<int> left_pre, left_post;
+    //     int i = 0, j = 1;
+    //     for(; i < post.size(); i++, j++) {
+    //         left_pre.push_back(pre[j]);
+    //         left_post.push_back(post[i]);
+    //         if(post[i] == next_root) {
+    //             i++;
+    //             j++;
+    //             break;
+    //         }
+    //     }
+    //     vector<int> right_pre, right_post;
+    //     while(j < pre.size()) {
+    //         right_pre.push_back(pre[j]);
+    //         right_post.push_back(post[i]);
+    //         i++;
+    //         j++;
+    //     }
+    //     ans->left = constructFromPrePost(left_pre, left_post);
+    //     ans->right = constructFromPrePost(right_pre, right_post);
+    //     return ans;
+    // }
+// };

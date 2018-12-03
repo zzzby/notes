@@ -1,0 +1,92 @@
+class CBTInserter {
+public:
+    TreeNode* root;
+    vector<TreeNode*> all;
+    int index_cur, index_parent;
+    bool is_left;
+    
+    CBTInserter(TreeNode* root) {
+        this->root = root;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()) {
+            TreeNode* t = q.front();
+            q.pop();
+            all.push_back(t);
+            if(t->left != NULL)
+                q.push(t->left);
+            if(t->right != NULL)
+                q.push(t->right);
+        }
+        index_cur = 0, index_parent = 0;
+        int change_p = -1;
+        is_left = false;
+        for( ; index_cur < all.size(); index_cur++) {
+            change_p++;  // = change_p + 1;
+            is_left = !is_left;
+            if(change_p % 2 == 0) { index_parent++; }
+        }
+        index_cur--;
+        index_parent--;
+    }
+    
+    int insert(int v) {
+        TreeNode* node = new TreeNode(v);
+        int t = all[index_parent]->val;
+        if(is_left) {
+            all[index_parent]->left = node;
+        } else {
+            all[index_parent]->right = node;
+            index_parent++;
+        }
+        is_left = !is_left;
+        all.push_back(node);
+        index_cur++;
+        return t;
+    }
+    
+    TreeNode* get_root() {
+        return root;
+    }
+};
+
+// 别人的答案
+class CBTInserter {
+public:
+    TreeNode* tree;
+    queue<TreeNode*> q;
+
+    CBTInserter(TreeNode* root) {
+        tree = root;
+        q.push(tree);
+    }
+    
+    int insert(int v) {
+        TreeNode* mom = NULL;
+				
+        while (!mom) {
+            TreeNode* f = q.front();
+            
+            if (!f->left) {
+                mom = f;
+                f->left = new TreeNode(v);
+            }
+            else if (!f->right) {
+                mom = f;
+                f->right = new TreeNode(v);
+            }
+            else {
+                q.pop();
+                q.push(f->left);
+                q.push(f->right);
+            }
+            
+        }
+        
+        return mom->val;
+    }
+    
+    TreeNode* get_root() {
+        return tree;
+    }
+};

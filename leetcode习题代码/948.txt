@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int P) {
+        
+        if(tokens.size() == 0) return 0;
+        sort(tokens.begin(), tokens.end());
+        if(P < tokens[0]) return 0;
+        int l = 0, r = tokens.size() - 1;
+        int point = 0;
+        
+        while(true) {
+            int cur = 0, i = l;
+            for(; i <= r; i++) { // 只考虑还没有换掉的token是否能转化成point
+                cur += tokens[i];
+                if(cur > P)
+                    break;
+            }
+            // 此时从l到i - 1的全部token都可以转化成point
+            point = i - l;
+            if(i >= r - 1) {
+                return point;
+            } else {
+                P += (tokens[r] - tokens[l]);
+                r--;
+                l++;
+            }
+        }
+        return point;
+    }
+};
