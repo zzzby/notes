@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) {
+        if(root->left == NULL && root->right == NULL) return root;
+        unordered_map<TreeNode*, TreeNode*> mapping;
+        vector<TreeNode*> q;
+        q.push_back(root);
+        q.push_back(NULL);
+        for(int i = 0; i < q.size(); i++) {
+            TreeNode* cur = q[i];
+            if(cur != NULL) {
+                if(cur->left != NULL) {
+                    q.push_back(cur->left);
+                    mapping[cur->left] = cur;
+                }
+                if(cur->right != NULL) {
+                    q.push_back(cur->right);
+                    mapping[cur->right] = cur;
+                }
+            } else {
+                if(i == q.size() - 1)
+                    break;
+                else
+                    q.push_back(NULL);
+            }
+        }
+        set<TreeNode*> s;
+        vector<TreeNode*>::reverse_iterator r_it = q.rbegin();
+        r_it++;
+        while(*r_it != NULL) {
+            s.insert(*r_it);
+            r_it++;
+        }
+        while(s.size() != 1) {
+            set<TreeNode*> temp = s;
+            s.clear();
+            set<TreeNode*>::iterator tt = temp.begin();
+            for(; tt != temp.end(); tt++) {
+                s.insert(mapping[*tt]);
+            }
+        }
+        return *s.begin();
+    }
+};
