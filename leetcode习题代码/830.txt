@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> largeGroupPositions(string S) {
+        vector<vector<int>> ans;
+        if(S.size() < 3) return ans;
+        int count = 1;
+        char last = S[0];
+        int start_index = 0;
+        for(int i = 1; i < S.size(); i++) {
+            vector<int> temp;
+            while(S[i] == last) {
+                count++;
+                i++;
+            }
+            if(count >= 3) {
+                temp.push_back(start_index);
+                temp.push_back(i - 1);
+                ans.push_back(temp);
+            }
+            count = 1;
+            last = S[i];
+            start_index = i;
+        }
+        return ans;
+    }
+};

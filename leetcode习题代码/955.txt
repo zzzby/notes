@@ -1,0 +1,67 @@
+class Solution {
+public:
+    int colHaveEqual = -1;
+    
+    int minDeletionSize(vector<string>& A) {
+        if(A.size() == 0) return 0;
+        int col_num = A[0].size();
+        int ans = 0;
+        for(int i = 0; i < col_num; i++) {
+            if(curColSeq(i, A) == -1) {
+                if(canDominate(colHaveEqual, i, A)) {
+                    break;
+                } else {
+                    ans += 1;
+                }
+                continue;
+            }
+            if(curColSeq(i, A) == 0) {
+                colHaveEqual = i;
+                continue;
+            }
+            if(curColSeq(i, A) == 1) {
+                break;
+            }
+        }
+        return ans;
+    }
+    
+    int curColSeq(int col, vector<string> &A) {
+        bool haveEqual = false;
+        int cur = A[0][col];
+        for(int i = 1; i < A.size(); i++) {
+            if(A[i][col] < cur) {
+                return -1;
+            }
+            if(A[i][col] == cur) {
+                haveEqual = true;
+            }
+            cur = A[i][col];
+        }
+        if(haveEqual) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    
+    bool canDominate(int lastCol, int curCol, vector<string> &A) {
+        if(lastCol == -1) return false;
+        string last = "";
+        last += A[0][lastCol];
+        last += A[0][curCol];
+        for(int i = 1; i < A.size(); i++) {
+            string cur = "";
+            cur += A[i][lastCol];
+            cur += A[i][curCol];
+            cout << last << endl;
+            cout << cur << endl;
+            if(last > cur) {
+                return false;
+            }
+            last = cur;
+        }
+        return true;
+        
+    }
+};
