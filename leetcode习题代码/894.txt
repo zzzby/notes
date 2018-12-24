@@ -1,0 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+// 经典递归问题
+
+class Solution {
+public:
+    // 保存子结果
+
+    // vector<TreeNode*> allPossibleFBT(int N) {
+    //     vector<TreeNode*>res;      
+    //     map<int, vector<TreeNode*>> mp;
+    //     if(N == 1){
+    //         TreeNode *root = new TreeNode(0);
+    //         res.push_back(root);
+    //         return res;
+    //     }
+    //     if(N % 2==0 || N < 1)  return res;        
+    //     vector<TreeNode*> lRes, rRes;
+    //     for(int i = 1;i < N; i += 2){
+    //         if(mp.count(i) == 0) { 
+    //             lRes = allPossibleFBT(i); 
+    //             mp[i] = lRes;
+    //         }
+    //         else  lRes = mp[i];
+    //         if(mp.count(N-i-1)==0) { 
+    //             rRes = allPossibleFBT(N - i - 1); 
+    //             mp[N - i - 1] = rRes;
+    //         }
+    //         else  rRes = mp[N - i - 1];          
+    //         for(int j = 0; j < lRes.size(); j++)
+    //             for(int k = 0; k < rRes.size(); k++){
+    //                 TreeNode* node = new TreeNode(0);
+    //                 node->left = lRes[j];
+    //                 node->right = rRes[k];
+    //                 res.push_back(node);
+    //             }
+    //     }
+    //     return res;
+    // }
+
+    // 不保存子结果
+    vector<TreeNode*> allPossibleFBT(int n) {
+        vector<TreeNode*> ans;
+        if (n==1) {
+            TreeNode* a = new TreeNode(0);
+            ans.push_back(a);
+            return ans;
+        }
+        if (n < 1 || n%2==0) return ans;
+        for (int i = 1; i < n; i=i+2) {
+            vector<TreeNode*> lans = allPossibleFBT(i);
+            vector<TreeNode*> rans = allPossibleFBT(n-i-1);
+            for (int j = 0; j < lans.size(); j++) {
+                for (int k = 0; k < rans.size(); k++) {
+                    TreeNode* r = new TreeNode(0);
+                    r->left = lans[j];
+                    r->right = rans[k];
+                    ans.push_back(r);
+                }
+            }
+        }
+        return ans;
+    }
+};

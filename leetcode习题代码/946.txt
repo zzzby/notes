@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+
+        stack<int> s;
+
+        int i, j;
+
+        for(i = 0, j = 0; i < pushed.size(); i++) {
+
+            if(pushed[i] == popped[j]) {
+
+                j++;
+
+                while(!s.empty() && popped[j] == s.top()) {
+
+                    s.pop();
+
+                    j++;
+                
+                }
+
+            } else {
+
+                s.push(pushed[i]);
+            }
+        
+        }
+        while(!s.empty()) {
+
+            if(s.top() != popped[j])
+
+                return false;
+
+            else {
+
+                s.pop();
+
+                j++;
+
+            }
+        
+        }
+        
+        return true;
+
+    }
+
+};

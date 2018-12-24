@@ -1,0 +1,43 @@
+class Solution {
+    public:
+    bool exist = false;
+    int max = 0;
+
+    string largestTimeFromDigits(vector<int>& A) {
+        sort(A.begin(), A.end());
+        do {
+            vector<int> time = A;
+            int hour = 10 * time[0] + time[1];
+            int min = 10 * time[2] + time[3];
+            cout << hour << " " << min << endl;
+            if(hour <= 23 && min <= 59) {
+                exist = true;
+                if((hour * 60 + min) > max) {
+                    max = hour * 60  + min;
+                }
+            }
+        } while (next_permutation(A.begin(), A.end()));
+        cout << max;
+        if(exist) {
+            return getAns(max);
+        } else {
+            return "";
+        }
+    }
+
+    string getAns(int time) {
+        int min = time % 60;
+        int hour = time / 60;
+        string ans = "";
+        if(hour < 10) {
+            ans += '0';
+        }
+        ans += to_string(hour);
+        ans += ':';
+        if(min < 10) {
+            ans += '0';
+        }
+        ans += to_string(min);
+        return ans;
+    }
+};

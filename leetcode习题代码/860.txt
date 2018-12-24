@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool lemonadeChange(vector<int>& bills) {
+        if(bills.size() == 0 || bills[0] != 5) return false;
+        map<int, int> mapping;
+        mapping[5] = 1;
+        for(int i = 1; i < bills.size(); i++) {
+            if(bills[i] == 5) {
+                mapping[5]++;
+            }
+            if(bills[i] == 10) {
+                mapping[5]--;
+                mapping[10]++;
+                if(mapping[5] < 0)
+                    return false;
+            }
+            if(bills[i] == 20) {
+                if(mapping[10] > 0) {  
+                    if(mapping[5] > 0) {     // have 10 have 5
+                        mapping[10]--;
+                        mapping[5]--;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    if(mapping[5] >= 3) {
+                        mapping[5] -= 3;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};

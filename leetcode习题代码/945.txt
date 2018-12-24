@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minIncrementForUnique(vector<int>& A) {
+        if(A.empty()) return 0;
+        sort(A.begin(), A.end());
+        int exist[80001];
+        memset(exist, 0, sizeof(exist));
+        for(int i = 0; i < A.size(); i++) {
+            exist[A[i]]++;
+        }
+        queue<int> q;
+        for(int i = A[0]; i < 80001; i++) {
+            if(exist[i] == 0) {
+                q.push(i);
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < 80001; i++) {
+            while(exist[i] > 1) {
+                while(q.front() <= i) {
+                    q.pop();
+                }
+                ans += (q.front() - i);
+                q.pop();
+                exist[i]--;
+            }
+        }
+        return ans;
+    }
+};

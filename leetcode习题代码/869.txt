@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool reorderedPowerOf2(int N) {
+        if(N == 1) return true;
+        int a = 1;
+        unordered_map<string, bool> mapping;
+        for(int i = 0; i < 30; i++) {
+            a *= 2;
+            string temp = to_string(a);
+            sort(temp.begin(), temp.end(), greater<int>());
+                mapping[temp] = true;
+        }
+        string ss = to_string(N);
+        sort(ss.begin(), ss.end(), greater<int>());
+        return mapping[ss];
+    }
+};

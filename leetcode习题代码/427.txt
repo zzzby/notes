@@ -1,0 +1,74 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+
+    Node() {}
+
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+class Solution {
+public:
+    Node* construct(vector<vector<int>>& grid) {
+        if(allTheSame(grid)) {
+            Node* cur;
+            if(grid[0][0] == 1) {
+                cur = new Node(true, true, NULL, NULL, NULL, NULL);
+            } else {
+                cur = new Node(false, true, NULL, NULL, NULL, NULL);
+            }
+            return cur;
+        }
+        int length = grid.size() / 2;
+        vector<vector<int>> tl, tr, bl, br;
+        for(int i = 0; i < length; i++) {
+            vector<int> tl_row, tr_row;
+            for(int j = 0; j < length; j++) {
+                tl_row.push_back(grid[i][j]);
+            }
+            tl.push_back(tl_row);
+            for(int j = length; j < grid.size(); j++) {
+                tr_row.push_back(grid[i][j]);
+            }
+            tr.push_back(tr_row);
+        }
+        for(int i = length; i < grid.size(); i++) {
+            vector<int> bl_row, br_row;
+            for(int j = 0; j < length; j++) {
+                bl_row.push_back(grid[i][j]);
+            }
+            bl.push_back(bl_row);
+            for(int j = length; j < grid.size(); j++) {
+                br_row.push_back(grid[i][j]);
+            }
+            br.push_back(br_row);
+        }
+        Node* cur = new Node(true, false, construct(tl), construct(tr), construct(bl), construct(br));
+        return cur;
+    }
+    
+    bool allTheSame(vector<vector<int>> &grid) {
+        int cur = grid[0][0];
+        for(int i = 0; i < grid.size(); i++) {
+            for(int j = 0; j < grid.size(); j++) {
+                if(grid[i][j] != cur)
+                    return false;
+            }
+        }
+        return true;
+    }
+};
